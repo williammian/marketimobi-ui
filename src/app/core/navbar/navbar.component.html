@@ -1,0 +1,92 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-marketimobi" (click)="openCloseNav()">&#9776; Market Imobi</div>
+    <div class="navbar-sair">
+      <!--<a href="javascript:;" (click)="logout()">Sair</a>-->
+      <!--<a pButton icon="fa fa-sign-out" (click)="logout()"></a>-->
+      <button pButton icon="fa fa-sign-out"
+                (click)="logout()"></button>
+    </div>
+  </div>
+</nav>
+
+<div id="mySidenav" class="sidenav">
+  <!--<a href="javascript:void(0)" style="font-size: xx-large;" (click)="closeNav()">&times;</a>-->
+  <a pButton icon="fa fa-times" (click)="closeNav()"></a>
+
+  <button class="dropdown-btn">{{ auth.jwtPayload?.usuario_nome }}
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <div *ngIf="auth.temPermissao('ROLE_MEUS_DADOS') || auth.temPermissao('ROLE_ADMINISTRADOR')"
+      class="sidenav-menuitem" routerLinkActive="ativo">
+      <a [routerLink]="['/usuarios', auth.jwtPayload?.usuario_id]">Meus dados</a>
+    </div>
+
+    <div *ngIf="auth.temPermissao('ROLE_ALTERAR_SENHA') || auth.temPermissao('ROLE_ADMINISTRADOR')"
+      class="sidenav-menuitem" routerLinkActive="ativo">
+      <a [routerLink]="['/usuarios', 'alterarSenha', auth.jwtPayload?.usuario_id]">Alterar Senha</a>
+    </div>
+
+    <div *ngIf="auth.temPermissao('ROLE_MINHA_IMOBILIARIA') || auth.temPermissao('ROLE_ADMINISTRADOR')"
+      class="sidenav-menuitem" routerLinkActive="ativo">
+      <a [routerLink]="['/imobiliarias', auth.jwtPayload?.imobiliaria_id]">Minha Imobiliária</a>
+    </div>
+
+    <a href="javascript:;" (click)="logout()">Sair</a>
+  </div>
+
+  <div *ngIf="auth.temPermissao('ROLE_ADMINISTRADOR')">
+    <button class="dropdown-btn">Administração
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/imobiliarias">Imobiliárias</a>
+      </div>
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/usuarios">Usuários</a>
+      </div>
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/categorias">Categorias</a>
+      </div>
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/contatos">Contatos</a>
+      </div>
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/produtos">Produtos</a>
+      </div>
+      <div class="sidenav-menuitem" routerLinkActive="ativo">
+        <a routerLink="/lancamentos">Downloads</a>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="auth.temPermissao('ROLE_PORTFOLIO') || auth.temPermissao('ROLE_ADMINISTRADOR')"
+    class="sidenav-menuitem" routerLinkActive="ativo">
+    <a routerLink="/portfolio/principais">Novidades</a>
+  </div>
+
+  <div *ngIf="auth.temPermissao('ROLE_PORTFOLIO') || auth.temPermissao('ROLE_ADMINISTRADOR')">
+    <ng-template ngFor let-categoria [ngForOf]="categorias">
+      <div *ngIf="categoria.subcategorias.length === 0; else sub">
+        <div class="sidenav-menuitem" routerLinkActive="ativo">
+          <a [routerLink]="['/portfolio', categoria.id]">{{categoria.nome}}</a>
+        </div>
+      </div>
+      <ng-template #sub>
+        <button class="dropdown-btn">{{categoria.nome}}
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-container">
+          <ng-template ngFor let-subcategoria [ngForOf]="categoria.subcategorias">
+            <div class="sidenav-menuitem" routerLinkActive="ativo">
+              <a [routerLink]="['/portfolio', subcategoria.id]">{{subcategoria.nome}}</a>
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+  
+</div>

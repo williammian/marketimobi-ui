@@ -1,0 +1,90 @@
+.navbar {
+  padding: 7px 0;
+  background-color: #1e94d2;
+}
+
+.navbar-marketimobi {
+  font-size:28px;
+  color: #f1f1f1;
+  cursor:pointer
+}
+
+@media (min-width: 1200px) {
+  .navbar-sair {
+    padding-right: 95px;
+  }
+}
+
+.navbar a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #f1f1f1;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 10px;
+  font-size: 18px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+  padding: 8px 8px 8px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: #f1f1f1;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+  background-color: #1e94d2;
+  color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+
+.sidenav .closebtn {
+  margin-left: 0px;
+  color: #f1f1f1;
+  font-size: 28px;
+}
+
+.sidenav-menuitem.ativo {
+  background-color: #494541;
+}

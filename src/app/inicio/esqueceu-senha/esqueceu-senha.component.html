@@ -1,0 +1,31 @@
+<app-navbar-inicio></app-navbar-inicio>
+
+<section id="esqueceu-senha">
+  <div class="container">
+    <form #f="ngForm" autocomplete="off" (ngSubmit)="confirmarEsqueceuSenha(f)">
+
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <h2>Esqueceu a senha?</h2>
+        </div>
+
+        <div class="ui-g-12 ui-md-7 ui-fluid">
+          <label>Informe o e-mail / login</label>
+          <input pInputText type="email" name="email"
+            [(ngModel)]="dto.email" required>
+        </div>
+
+        <div class="ui-g-12">
+          <label style="display: block">Data de Nascimento</label>
+          <p-calendar dateFormat="dd/mm/yy" [locale]="ptBR" [inputStyle]="{ width: '95px' }"
+            name="dataNascimento" [(ngModel)]="dto.dataNascimento" required></p-calendar>
+        </div>
+
+        <div class="ui-g-12">
+          <button pButton type="submit" label="Enviar" [disabled]="f.invalid"></button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>

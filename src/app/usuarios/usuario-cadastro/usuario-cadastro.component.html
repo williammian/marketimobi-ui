@@ -1,0 +1,203 @@
+<div class="container">
+  <form autocomplete="off" (ngSubmit)="salvar()" [formGroup]="formulario">
+    <div class="ui-g-11">
+      <div class="ui-g-12">
+        <h2>{{ editando ? 'Edição de' : 'Novo' }} Usuário / Corretor</h2>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome" required minlength="3" maxlength="50"
+          formControlName="nome">
+
+        <app-message [control]="formulario.get('nome')" error="required"
+          text="Informe o nome"></app-message>
+        <app-message [control]="formulario.get('nome')" error="minlength"
+          text="Mínimo de {{ formulario.get('nome').errors?.minlength?.requiredLength }} caracteres"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Sobrenome</label>
+        <input pInputText type="text" name="sobrenome" required minlenth="3" maxlength="50"
+          formControlName="sobrenome">
+
+        <app-message [control]="formulario.get('sobrenome')" error="required"
+          text="Informe o sobrenome"></app-message>
+        <app-message [control]="formulario.get('sobrenome')" error="minlength"
+          text="Mínimo de {{ formulario.get('sobrenome').errors?.minlength?.requiredLength }} caracteres"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>Nome Profissional</label>
+        <input pInputText type="text" name="nomeProfissional"
+          formControlName="nomeProfissional">
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label style="display: block">Status</label>
+        <p-dropdown [options]="status" name="status" formControlName="status"
+        [disabled]="!auth.temPermissao('ROLE_ADMINISTRADOR')"></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label style="display: block">Sexo</label>
+        <p-dropdown [options]="sexos" name="sexo" formControlName="sexo"></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label style="display: block">Data de Nascimento</label>
+        <p-calendar dateFormat="dd/mm/yy" [locale]="ptBR" [inputStyle]="{ width: '95px' }"
+          name="dataNascimento" formControlName="dataNascimento"></p-calendar>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Telefone Fixo</label>
+
+        <p-inputMask name="telefoneFixo" formControlName="telefoneFixo"
+          mask="(99) 9999-9999"></p-inputMask>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Telefone Celular</label>
+
+        <p-inputMask name="telefoneCelular" formControlName="telefoneCelular"
+          mask="(99) 99999-999?9"></p-inputMask>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Cargo</label>
+        <input pInputText type="text" name="cargo"
+          formControlName="cargo">
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>CRECI</label>
+        <input pInputText type="text" name="creci" maxlength="20"
+          formControlName="creci">
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>Site</label>
+        <input pInputText type="text" name="site" maxlength="50"
+          formControlName="site">
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>E-mail</label>
+        <input pInputText type="email" name="email" maxlength="50"
+          formControlName="email" email>
+
+        <app-message [control]="formulario.get('email')" error="email" text="Informe um e-mail válido"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid" *ngIf="!formulario.get('id').value">
+        <label>Senha</label>
+        <input pInputText type="password" name="senhaInformada" maxlength="50"
+          formControlName="senhaInformada">
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMINISTRADOR')">
+        <p-panel header="Permissões">
+          <p-listbox [options]="permissoes" formControlName="permissoes"
+            multiple="multiple" checkbox="checkbox"></p-listbox>
+        </p-panel>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid"
+        *ngIf="!auth.temPermissao('ROLE_ADMINISTRADOR')">
+        <span></span>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" formGroupName="imobiliaria">
+        <label>Imobiliária</label>
+        <p-dropdown name="imobiliaria" [options]="imobiliarias" placeholder="Selecione"
+          [autoWidth]="false" [filter]="true"
+          formControlName="id"
+          [disabled]="!auth.temPermissao('ROLE_ADMINISTRADOR')" ></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-fluid"
+        *ngIf="!formulario.get('imagem1').value">
+        <label>Imagem 1</label>
+        <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+          chooseLabel="Imagem 1" accept="image/*"
+          [url]="urlUploadImagem"
+          (onBeforeSend)="antesUploadImagem($event, 1)"
+          (onUpload)="aoTerminarUploadImagem($event, 1)"
+          (onError)="erroUpload($event, 1)"
+          [hidden]="uploadEmAndamento1"></p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento1"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12 ui-fluid" dir="rtl"
+        *ngIf="formulario.get('imagem1').value">
+        <label>Imagem 1</label>
+        <button pButton type="button" class="ui-button-danger"
+          icon="fa fa-close" pTooltip="Remover Imagem 1" tooltipPosition="top"
+          (click)="removerImagem(1)"></button>
+
+        <a target="_blank" pTooltip="Baixar Imagem 1" tooltipPosition="top"
+          [href]="formulario.get('urlImagem1').value">{{ nomeImagem(1) }}</a>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <span></span>
+      </div>
+
+      <div class="ui-g-12 ui-fluid"
+        *ngIf="formulario.get('imagem1').value">
+        <img src="{{formulario.get('urlImagem1').value}}">
+      </div>
+
+      <div class="ui-g-12 ui-fluid"
+        *ngIf="!formulario.get('imagem2').value">
+        <label>Imagem 2</label>
+        <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+          chooseLabel="Imagem 2" accept="image/*"
+          [url]="urlUploadImagem"
+          (onBeforeSend)="antesUploadImagem($event, 2)"
+          (onUpload)="aoTerminarUploadImagem($event, 2)"
+          (onError)="erroUpload($event, 2)"
+          [hidden]="uploadEmAndamento2"></p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento2"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12 ui-fluid" dir="rtl"
+        *ngIf="formulario.get('imagem2').value">
+        <label>Imagem 2</label>
+        <button pButton type="button" class="ui-button-danger"
+          icon="fa fa-close" pTooltip="Remover Imagem 2" tooltipPosition="top"
+          (click)="removerImagem(2)"></button>
+
+        <a target="_blank" pTooltip="Baixar Imagem 2" tooltipPosition="top"
+          [href]="formulario.get('urlImagem2').value">{{ nomeImagem(2) }}</a>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <span></span>
+      </div>
+
+      <div class="ui-g-12 ui-fluid"
+        *ngIf="formulario.get('imagem2').value">
+        <img src="{{formulario.get('urlImagem2').value}}">
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="formulario.invalid || uploadEmAndamento"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info"
+          (click)="novo()"></button>
+        <a routerLink="/usuarios" *ngIf="auth.temPermissao('ROLE_ADMINISTRADOR')">Voltar para a pesquisa</a>
+        <p></p>
+        <p>
+          <a [routerLink]="['/usuarios', formulario.get('id').value, 'setarSenha']"
+            *ngIf="auth.temPermissao('ROLE_ADMINISTRADOR') && formulario.get('id').value">
+            Setar Senha</a>
+        </p>
+      </div>
+    </div>
+  </form>
+</div>

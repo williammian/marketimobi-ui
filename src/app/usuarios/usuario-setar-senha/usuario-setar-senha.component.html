@@ -1,0 +1,26 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="setarSenha(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h2>Alteração de Senha de Usuário</h2>
+      </div>
+
+      <div class="ui-g-12 ui-md-7 ui-fluid">
+        <label>Nova Senha</label>
+        <input pInputText type="password" name="senhaNova"
+          [(ngModel)]="senhaNova" required>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <p>
+          <a [routerLink]="['/usuarios', usuario.id]">
+            Voltar</a>
+        </p>
+      </div>
+    </div>
+
+  </form>
+
+</div>

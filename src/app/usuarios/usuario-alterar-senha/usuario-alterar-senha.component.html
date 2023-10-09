@@ -1,0 +1,34 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="alterarSenha(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h2>Alteração de Senha de Usuário</h2>
+      </div>
+
+      <div class="ui-g-12 ui-md-7 ui-fluid">
+        <label>Senha Atual</label>
+        <input pInputText type="password" name="senhaAtual"
+          [(ngModel)]="dto.senhaAtual" #senhaAtual="ngModel" required>
+
+        <app-message [control]="senhaAtual" error="required"
+          text="Informe a senha atual"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-7 ui-fluid">
+        <label>Nova Senha</label>
+        <input pInputText type="password" name="senhaNova"
+          [(ngModel)]="dto.senhaNova" #senhaNova="ngModel" required>
+
+        <app-message [control]="senhaNova" error="required"
+          text="Informe a nova senha"></app-message>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+      </div>
+    </div>
+
+  </form>
+
+</div>

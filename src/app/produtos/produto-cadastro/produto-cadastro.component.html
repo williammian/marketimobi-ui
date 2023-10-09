@@ -1,0 +1,244 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+    
+    <div class="ui-g-11">
+      <div class="ui-g-12">
+        <h2>{{ editando ? 'Edição de' : 'Novo' }} Produto</h2>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Código</label>
+        <input pInputText type="text" name="codigo"
+          [(ngModel)]="produto.codigo"
+          #codigo="ngModel" required minlength="3" maxlength="10">
+
+        <app-message [control]="codigo" error="required"
+          text="Informe o código"></app-message>
+        <app-message [control]="codigo" error="minlength"
+          text="Mínimo de {{ codigo.errors?.minlength?.requiredLength }} caracteres"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-8 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome"
+          [(ngModel)]="produto.nome"
+          #nome="ngModel" required minlength="3" maxlength="30">
+
+        <app-message [control]="nome" error="required"
+          text="Informe o nome"></app-message>
+        <app-message [control]="nome" error="minlength"
+          text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>Descrição</label>
+        <input pInputText type="text" name="descricao"
+          [(ngModel)]="produto.descricao"
+          #descricao="ngModel" required minlength="3" maxlength="50">
+
+        <app-message [control]="descricao" error="required"
+          text="Informe a descrição"></app-message>
+        <app-message [control]="descricao" error="minlength"
+          text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label style="display: block">Categoria</label>
+        <p-dropdown [options]="categorias" name="categoria" [(ngModel)]="produto.categoria"
+          [autoWidth]="false" [filter]="true" required></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <span></span>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <p-checkbox label="Principal" name="principal" [(ngModel)]="produto.principal" binary="true"></p-checkbox>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <p-checkbox label="Gerar PNG" name="gerarPNG" [(ngModel)]="produto.gerarPNG" binary="true"></p-checkbox>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <p-checkbox label="Gerar PDF" name="gerarPDF" [(ngModel)]="produto.gerarPDF" binary="true"></p-checkbox>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Largura Imagem Original</label>
+        <p-inputMask name="larguraImagem" mask="9?999"
+          [(ngModel)]="produto.larguraImagem"
+          #larguraImagem="ngModel" required></p-inputMask>
+
+        <app-message [control]="larguraImagem" error="required"
+          text="Informe a largura da imagem"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Altura Imagem Original</label>
+        <p-inputMask name="alturaImagem" mask="9?999"
+          [(ngModel)]="produto.alturaImagem"
+          #alturaImagem="ngModel" required></p-inputMask>
+
+        <app-message [control]="alturaImagem" error="required"
+          text="Informe a altura da imagem"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Largura Imagem Cartão</label>
+        <p-inputMask name="larguraImagemCard" mask="9?999"
+          [(ngModel)]="produto.larguraImagemCard"
+          #larguraImagemCard="ngModel" required></p-inputMask>
+
+        <app-message [control]="larguraImagemCard" error="required"
+          text="Informe a largura da imagem Card"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Altura Imagem Cartão</label>
+        <p-inputMask name="alturaImagemCard" mask="9?999"
+          [(ngModel)]="produto.alturaImagemCard"
+          #alturaImagemCard="ngModel" required></p-inputMask>
+
+        <app-message [control]="alturaImagemCard" error="required"
+          text="Informe a altura da imagem Card"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Largura Imagem Amostra</label>
+        <p-inputMask name="larguraImagemAmostra" mask="9?999"
+          [(ngModel)]="produto.larguraImagemAmostra"
+          #larguraImagemAmostra="ngModel" required></p-inputMask>
+
+        <app-message [control]="larguraImagemAmostra" error="required"
+          text="Informe a largura da imagem amostra"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Altura Imagem Amostra</label>
+        <p-inputMask name="alturaImagemAmostra" mask="9?999"
+          [(ngModel)]="produto.alturaImagemAmostra"
+          #alturaImagemAmostra="ngModel" required></p-inputMask>
+
+        <app-message [control]="alturaImagemAmostra" error="required"
+          text="Informe a altura da imagem amostra"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="!produto.imagem">
+        <label>Imagem</label>
+        <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+          chooseLabel="Imagem" accept="image/*"
+          [url]="urlUploadImagem"
+          (onBeforeSend)="antesUploadImagem($event, 1)"
+          (onUpload)="aoTerminarUploadImagem($event, 1)"
+          (onError)="erroUpload($event, 1)"
+          [hidden]="uploadEmAndamento1">
+        </p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento1"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid" dir="rtl"
+        *ngIf="produto.imagem">
+        <label>Imagem</label>
+        <button pButton type="button" class="ui-button-danger"
+          icon="fa fa-close" pTooltip="Remover Imagem" tooltipPosition="top"
+          (click)="removerImagem(1)"></button>
+
+        <a target="_blank" pTooltip="Baixar Imagem" tooltipPosition="top"
+          [href]="produto.urlImagem">{{ nomeImagem(1) }}</a>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="produto.imagem">
+        <img src="{{produto.urlImagem}}">
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="!produto.imagemCard">
+        <label>Imagem Cartão</label>
+        <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="500000"
+          chooseLabel="Imagem Cartão" accept="image/*"
+          [url]="urlUploadImagem"
+          (onBeforeSend)="antesUploadImagem($event, 3)"
+          (onUpload)="aoTerminarUploadImagem($event, 3)"
+          (onError)="erroUpload($event, 3)"
+          [hidden]="uploadEmAndamento3">
+        </p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento3"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid" dir="rtl"
+        *ngIf="produto.imagemCard">
+        <label>Imagem Cartão</label>
+        <button pButton type="button" class="ui-button-danger"
+          icon="fa fa-close" pTooltip="Remover Imagem Cartão" tooltipPosition="top"
+          (click)="removerImagem(3)"></button>
+
+        <a target="_blank" pTooltip="Baixar Imagem Cartão" tooltipPosition="top"
+          [href]="produto.urlImagemCard">{{ nomeImagem(3) }}</a>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="produto.imagemCard">
+        <img src="{{produto.urlImagemCard}}">
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="!produto.imagemFundo">
+        <label>Imagem Fundo</label>
+        <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+          chooseLabel="Imagem Fundo" accept="image/*"
+          [url]="urlUploadImagem"
+          (onBeforeSend)="antesUploadImagem($event, 2)"
+          (onUpload)="aoTerminarUploadImagem($event, 2)"
+          (onError)="erroUpload($event, 2)"
+          [hidden]="uploadEmAndamento2"></p-fileUpload>
+
+          <p-progressSpinner [hidden]="!uploadEmAndamento2"
+            [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid" dir="rtl"
+        *ngIf="produto.imagemFundo">
+        <label>Imagem Fundo</label>
+        <button pButton type="button" class="ui-button-danger"
+          icon="fa fa-close" pTooltip="Remover Imagem Fundo" tooltipPosition="top"
+          (click)="removerImagem(2)"></button>
+
+        <a target="_blank" pTooltip="Baixar Imagem Fundo" tooltipPosition="top"
+          [href]="produto.urlImagemFundo">{{ nomeImagem(2) }}</a>
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid"
+        *ngIf="produto.imagemFundo">
+        <img src="{{produto.urlImagemFundo}}">
+      </div>
+
+      <div class="ui-g-12">
+        <p-panel header="Itens do Produto">
+          <app-produto-cadastro-item [itensProduto]="produto.itensProduto"></app-produto-cadastro-item>
+        </p-panel>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+
+        <button pButton type="button" label="Novo" class="ui-button-info"
+          (click)="novo(f)"></button>
+
+        <a routerLink="/produtos">Voltar para a pesquisa</a>
+
+        <p></p>
+        <a *ngIf="produto.id"
+         [routerLink]="['/portfolio/design-place', produto.id]">Design Place do Produto</a>
+      </div>
+    </div>
+
+  </form>
+
+</div>

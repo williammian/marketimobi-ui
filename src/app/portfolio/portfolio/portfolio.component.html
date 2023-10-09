@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="ui-g-11">
+    <!--
+    <p-dataView [value]="produtos" [paginator]="true" [rows]="12" layout="grid"
+      emptyMessage = "Não foram encontrados produtos no portfólio.">
+    -->
+    <p-dataView [value]="produtosPortfolio" [paginator]="true" [rows]="filtro.itensPorPagina" layout="grid"
+      [lazy]="true" [totalRecords]="totalRegistros" 
+      (onLazyLoad)="aoMudarPagina($event)"
+      emptyMessage = "Não foram encontrados produtos no portfólio."
+      #grid>
+
+      <p-header>
+        <div class="ui-g">
+          <div class="ui-g-10" style="text-align:left">
+            <strong>{{categoria ? categoria.nome : 'Novidades'}}</strong>
+          </div>
+          <div class="ui-g-2" style="text-align:right">
+              <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+          </div>
+        </div>
+      </p-header>
+
+      <ng-template let-produto pTemplate="listItem">
+        <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+          <div class="ui-g-12 ui-md-4" style="text-align:center">
+              <img src={{produto.urlImagemCard}} width={{produto.larguraImagemCard}} height={{produto.alturaImagemCard}}>
+          </div>
+          <div class="ui-g-12 ui-md-6">
+              <div class="ui-g">
+                  <div class="ui-g-3 ui-sm-6">Código: </div>
+                  <div class="ui-g-9 ui-sm-6"><b>{{produto.codigo}}</b></div>
+
+                  <div class="ui-g-3 ui-sm-6">Nome: </div>
+                  <div class="ui-g-9 ui-sm-6"><b>{{produto.nome}}</b></div>
+
+                  <div class="ui-g-3 ui-sm-6">Descrição: </div>
+                  <div class="ui-g-9 ui-sm-6"><b>{{produto.descricao}}</b></div>
+              </div>
+          </div>
+          <div class="ui-g-12 ui-md-2">
+              <button pButton type="button" icon="fa fa-search"
+                pTooltip="Visualizar" tooltipPosition="top"
+                (click)="visualizarProduto($event, produto)"></button>
+
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Design Place" tooltipPosition="top"
+                [routerLink]="['/portfolio/design-place', produto.id]"></a>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template let-produto pTemplate="gridItem">
+        <div style="padding:.5em" class="ui-g-12 ui-md-3">
+          <p-panel [header]="produto.nome" [style]="{'text-align':'center'}">
+              <img src={{produto.urlImagemCard}} width={{produto.larguraImagemCard}} height={{produto.alturaImagemCard}}>
+              <hr class="ui-widget-content" style="border-top:0">
+
+              <button pButton type="button" icon="pi pi-search"
+                pTooltip="Visualizar" tooltipPosition="top"
+                (click)="visualizarProduto($event, produto)"></button>
+
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Design Place" tooltipPosition="top"
+                [routerLink]="['/portfolio/design-place', produto.id]"></a>
+          </p-panel>
+        </div>
+      </ng-template>
+
+    </p-dataView>
+  </div>
+</div>
+
+<p-dialog [(visible)]="displayDialog" showEffect="fade" [responsive]="true" [modal]="true" [resizable]="false">
+  <div class="ui-g" *ngIf="produtoSelecionado">
+      <div class="ui-g-12">
+        <img src={{produtoSelecionado.urlImagem}} width={{produtoSelecionado.larguraImagemAmostra}} height={{produtoSelecionado.alturaImagemAmostra}}>
+      </div>
+  </div>
+</p-dialog>

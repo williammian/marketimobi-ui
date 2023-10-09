@@ -1,0 +1,71 @@
+<app-navbar-inicio></app-navbar-inicio>
+
+<section id="contato">
+  <div class="container">
+
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Entre em contato</h2>
+        </div>
+      </div>
+
+      <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome"
+            [(ngModel)]="contato.nome"
+            #nome="ngModel" required minlength="3" maxlength="30"/>
+
+          <app-message [control]="nome" error="required"
+            text="Informe o nome"></app-message>
+          <app-message [control]="nome" error="minlength"
+            text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres"></app-message>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>E-mail</label>
+          <input pInputText type="email" name="email"
+            [(ngModel)]="contato.email" #email="ngModel" required email/>
+
+          <app-message [control]="email" error="required" text="Informe o email"></app-message>
+          <app-message [control]="email" error="email" text="Informe um e-mail válido"></app-message>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Telefone</label>
+
+          <p-inputMask name="telefone" [(ngModel)]="contato.telefone"
+            mask="(99) 99999-999?9"></p-inputMask>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Assunto</label>
+          <input pInputText type="text" name="assunto" maxlength="50"
+            [(ngModel)]="contato.assunto"/>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label style="display: block">Mensagem</label>
+          <textarea [rows]="5" [cols]="60" pInputTextarea autoResize="autoResize" name="mensagem" maxlength="500"
+            [(ngModel)]="contato.mensagem"></textarea>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <div>
+            <strong>Market Imobi</strong>
+            <br>CNPJ: 39.753.738/0001-65
+            <br>contato@marketimobi.com.br
+          </div>
+        </div>
+
+        <div class="ui-g-12">
+          <button pButton type="submit" label="Enviar" [disabled]="f.invalid"></button>
+        </div>
+
+      </form>
+
+  </div>
+</section>
+
+

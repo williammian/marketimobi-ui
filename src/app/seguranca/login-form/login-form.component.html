@@ -1,0 +1,43 @@
+<div class="py-5 mb-5" style="height: 100vh; background-color: #1976d2;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1 class="text-white">Market Imobi</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                <div class="card-body">
+                    <form autocomplete="off" #f="ngForm">
+                      <div class="ui-g ui-fluid">
+
+                        <div class="ui-g-12">
+                          <input pInputText type="email" name="usuario" placeholder="E-mail"
+                            ngModel required #usuario>
+                        </div>
+
+                        <div class="ui-g-12">
+                          <input pInputText type="password" name="senha" placeholder="Senha"
+                            ngModel required #senha>
+                        </div>
+
+                        <div class="ui-g-12">
+                          <button pButton type="submit" label="Entrar" [disabled]="!f.valid"
+                            (click)="login(usuario.value, senha.value); senha.value='';"></button>
+                        </div>
+
+                      </div>
+
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                  <div class="small"><a routerLink="/esqueceuSenha">Esqueceu a senha?</a></div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="small" style="padding-top: 30px;"><a class="text-white-50" routerLink="/inicio">Home</a></div>
+      </div>
+  </div>
+</div>

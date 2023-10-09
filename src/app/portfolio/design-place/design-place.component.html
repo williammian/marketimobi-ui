@@ -1,0 +1,91 @@
+<div class="container">
+
+  <div class="ui-g-11">
+    <div class="ui-g-12 ui-fluid">
+      <h4>{{produto.nome}}</h4>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <h5>{{produto.descricao}}</h5>
+    </div>
+
+    <ng-template ngFor let-itemProduto [ngForOf]="produto.itensProduto">
+      <ng-container *ngIf="itemProduto.origem === 'USUARIO'">
+
+        <ng-container *ngIf="itemProduto.tipo === 'TEXTO'">
+          <div class="ui-g-12 ui-md-12 ui-fluid">
+            <label>{{itemProduto.etiqueta}}</label>
+            <input pInputText type="text" name="textoUsuario" maxlength={{itemProduto.qtdMaxCaracteres}}
+              placeholder="{{itemProduto.orientacaoUsuario ? itemProduto.orientacaoUsuario : 'Texto'}}" [(ngModel)]="itemProduto.textoUsuario"/>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="itemProduto.tipo === 'IMAGEM'">
+          <div class="ui-g-12 ui-md-12 ui-fluid"
+            *ngIf="!itemProduto.imagemUsuario">
+            <label>{{itemProduto.etiqueta}}</label>
+            <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+              chooseLabel="{{itemProduto.orientacaoUsuario ? itemProduto.orientacaoUsuario : 'Imagem'}}" accept="image/*"
+              [url]="urlUploadImagem"
+              (onBeforeSend)="antesUploadImagem($event)"
+              (onUpload)="aoTerminarUploadImagem($event, itemProduto)"
+              (onError)="erroUpload($event)"
+              [hidden]="uploadEmAndamento"></p-fileUpload>
+
+              <p-progressSpinner [hidden]="!uploadEmAndamento"
+                [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+          </div>
+
+          <div class="ui-g-12 ui-md-12 ui-fluid" dir="rtl"
+            *ngIf="itemProduto.imagemUsuario">
+            <label>{{itemProduto.etiqueta}}</label>
+            <button pButton type="button" class="ui-button-danger"
+              icon="fa fa-close" pTooltip="Remover Imagem" tooltipPosition="top"
+              (click)="removerImagem(itemProduto)"></button>
+
+            <a target="_blank" pTooltip="Baixar Imagem" tooltipPosition="top"
+              [href]="itemProduto.urlImagemUsuario">{{ nomeImagem(itemProduto) }}</a>
+          </div>
+        </ng-container>
+
+      </ng-container>
+    </ng-template>
+
+    <div class="ui-g-12">
+      <label>Modelo</label>
+      <p-card [style]="{'text-align':'center'}">
+        <img src={{produto.urlImagem}} width={{produto.larguraImagemAmostra}} height={{produto.alturaImagemAmostra}}>
+
+        <p-footer>
+          <button pButton type="button" icon="pi pi-search"
+            pTooltip="Visualizar" tooltipPosition="top"
+            (click)="visualizarProduto($event, produto)"></button>
+        </p-footer>
+      </p-card>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Tipo de Arquivo</label>
+
+      <p-dropdown [options]="tiposArquivos" [autoWidth]="false" name="tipoArquivo" required
+        [(ngModel)]="tipoArquivo"></p-dropdown>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="button" label="Gerar"
+        (click)="gerar($event)"></button>
+
+      <a href="javascript:history.back()">Voltar</a>
+    </div>
+
+  </div>
+
+</div>
+
+<p-dialog [(visible)]="displayDialogVisualizar" showEffect="fade" [responsive]="true" [modal]="true" [resizable]="false">
+  <div class="ui-g">
+      <div class="ui-g-12">
+        <img src={{produto.urlImagem}} width={{produto.larguraImagem}} height={{produto.alturaImagem}}>
+      </div>
+  </div>
+</p-dialog>

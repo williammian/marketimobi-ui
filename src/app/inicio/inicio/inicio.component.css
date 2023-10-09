@@ -1,0 +1,26 @@
+
+@media (min-width: 800px) {
+    .contato {
+        float: left;
+    }
+}
+
+@media (min-width: 800px) {
+    .cnpj {
+        float: right;
+    }
+}
+
+@media (min-width: 800px) {
+    .copyright {
+        margin: 0 auto;
+        width: 200px;
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    iframe {
+        height: 200px;
+        width: 250px;
+    }
+}

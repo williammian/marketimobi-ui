@@ -1,0 +1,253 @@
+<div class="ui-g">
+  <div class="ui-g-12">
+    <button pButton label="Novo" icon="fa fa-plus" type="button"
+      class="ui-button-secondary" (click)="prepararNovoItemProduto()"></button>
+  </div>
+
+  <div class="ui-g-12">
+    <p-table [value]="itensProduto" [responsive]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Sequência</th>
+          <th>Descrição</th>
+          <th class="col-acoes-header"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-itemProduto
+        let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ itemProduto.sequencia }}</td>
+          <td>{{ itemProduto.descricao }}</td>
+          <td class="col-acoes">
+            <button pButton icon="fa fa-pencil" type="button"
+              pTooltip="Editar" tooltipPosition="top"
+              (click)="prepararEdicaoItemProduto(itemProduto, rowIndex)"></button>
+
+            <button pButton icon="fa fa-trash" type="button"
+              pTooltip="Excluir" tooltipPosition="top"
+              (click)="removerItemProduto(rowIndex)"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">
+            Nenhum item de produto cadastrado
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog [header]="editando ? 'Edição Item de Produto' : 'Novo Item de Produto'" [(visible)]="exbindoFormularioItemProduto"
+  modal="modal" *ngIf="itemProduto"
+  [contentStyle]="{'max-width':'900px'}">
+
+  <form #frmItemProduto="ngForm" autocomplete="off" (ngSubmit)="confirmarItemProduto(frmItemProduto)">
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Sequência</label>
+
+      <p-inputMask name="sequencia" required mask="9?999"
+        [(ngModel)]="itemProduto.sequencia" #itemProdutoSequencia="ngModel"></p-inputMask>
+
+      <app-message [control]="itemProdutoSequencia" error="required" text="Informe a sequência"></app-message>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Tipo</label>
+
+      <p-dropdown [options]="tipos" [autoWidth]="false" name="tipo" required
+        [(ngModel)]="itemProduto.tipo"></p-dropdown>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Origem</label>
+
+      <p-dropdown [options]="origens" [autoWidth]="false" name="origem" required
+        [(ngModel)]="itemProduto.origem"></p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Descrição</label>
+
+      <input pInputText type="text" name="descricao" required maxlength="50"
+        [(ngModel)]="itemProduto.descricao" #itemProdutoDescricao="ngModel"/>
+
+      <app-message [control]="itemProdutoDescricao" error="required" text="Informe a descrição"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Etiqueta</label>
+
+      <input pInputText type="text" name="etiqueta" maxlength="30"
+        [(ngModel)]="itemProduto.etiqueta"/>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Orientação para o usuário</label>
+
+      <input pInputText type="text" name="orientacaoUsuario" maxlength="30"
+        [(ngModel)]="itemProduto.orientacaoUsuario"/>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Largura</label>
+
+      <p-inputMask name="largura" required mask="9?999"
+        [(ngModel)]="itemProduto.largura" #itemProdutoLargura="ngModel"></p-inputMask>
+
+      <app-message [control]="itemProdutoLargura" error="required" text="Informe a largura"></app-message>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Altura</label>
+
+      <p-inputMask name="altura" required mask="9?999"
+        [(ngModel)]="itemProduto.altura" #itemProdutoAltura="ngModel"></p-inputMask>
+
+      <app-message [control]="itemProdutoAltura" error="required" text="Informe a altura"></app-message>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Posição X</label>
+
+      <p-inputMask name="posicaoX" required mask="9?999"
+        [(ngModel)]="itemProduto.posicaoX" #itemProdutoPosicaoX="ngModel"></p-inputMask>
+
+      <app-message [control]="itemProdutoPosicaoX" error="required" text="Informe a posição X"></app-message>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Posição Y</label>
+
+      <p-inputMask name="posicaoY" required mask="9?999"
+        [(ngModel)]="itemProduto.posicaoY" #itemProdutoPosicaoY="ngModel"></p-inputMask>
+
+      <app-message [control]="itemProdutoPosicaoY" error="required" text="Informe a posição Y"></app-message>
+    </div>
+
+    <div class="ui-g-6 ui-fluid">
+      <label style="display: block">Tipo Imagem</label>
+
+      <p-dropdown [options]="tiposImagemSistema" [autoWidth]="false" name="tipoImagemSistema"
+        [(ngModel)]="itemProduto.tipoImagemSistema"></p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-fluid"
+      *ngIf="!itemProduto.imagemSistema">
+      <label>Imagem Sistema Informada</label>
+      <p-fileUpload name="arquivo" mode="basic" auto="true" maxFileSize="5000000"
+        chooseLabel="Imagem" accept="image/*"
+        [url]="urlUploadImagem"
+        (onBeforeSend)="antesUploadImagem($event)"
+        (onUpload)="aoTerminarUploadImagem($event)"
+        (onError)="erroUpload($event)"
+        [hidden]="uploadEmAndamento"></p-fileUpload>
+
+        <p-progressSpinner [hidden]="!uploadEmAndamento"
+          [style]="{ width: '25px', height: '25px' }"></p-progressSpinner>
+    </div>
+
+    <div class="ui-g-12 ui-fluid" dir="rtl"
+      *ngIf="itemProduto.imagemSistema">
+      <label>Imagem Sistema Informada</label>
+      <button pButton type="button" class="ui-button-danger"
+        icon="fa fa-close" pTooltip="Remover Imagem" tooltipPosition="top"
+        (click)="removerImagem()"></button>
+
+      <a target="_blank" pTooltip="Baixar Imagem" tooltipPosition="top"
+        [href]="itemProduto.urlImagemSistema">{{ nomeImagem() }}</a>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <span></span>
+    </div>
+
+    <div class="ui-g-12 ui-fluid"
+      *ngIf="itemProduto.imagemSistema">
+      <img src="{{itemProduto.urlImagemSistema}}">
+    </div>
+
+    <div class="ui-g-4 ui-fluid">
+      <label style="display: block">Tipo Texto</label>
+
+      <p-dropdown [options]="tiposTextoSistema" [autoWidth]="false" name="tipoTextoSistema"
+        [(ngModel)]="itemProduto.tipoTextoSistema"></p-dropdown>
+    </div>
+
+    <div class="ui-g-8 ui-fluid">
+      <span></span>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Texto Sistema</label>
+
+      <input pInputText type="text" name="textoSistema" maxlength="100"
+        [(ngModel)]="itemProduto.textoSistema"/>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Fonte</label>
+
+      <p-dropdown [options]="fontes" [autoWidth]="false" name="fonte"
+        [(ngModel)]="itemProduto.fonte"></p-dropdown>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Tipo da Fonte</label>
+
+      <p-dropdown [options]="tiposFonte" [autoWidth]="false" name="tipoFonte"
+        [(ngModel)]="itemProduto.tipoFonte"></p-dropdown>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Tamanho da Fonte</label>
+
+      <p-inputMask name="tamanhoFonte" mask="9?99"
+        [(ngModel)]="itemProduto.tamanhoFonte"></p-inputMask>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label style="display: block">Alinhamento do Texto</label>
+
+      <p-dropdown [options]="alinhamentosTexto" [autoWidth]="false" name="alinhamentoTexto"
+        [(ngModel)]="itemProduto.alinhamentoTexto"></p-dropdown>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Qtd Max Caracteres</label>
+
+      <p-inputMask name="qtdMaxCaracteres" mask="9?99"
+        [(ngModel)]="itemProduto.qtdMaxCaracteres"></p-inputMask>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Cor da Fonte RGB (R)</label>
+
+      <p-inputMask name="corFonteR" mask="9?99"
+        [(ngModel)]="itemProduto.corFonteR"></p-inputMask>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Cor da Fonte RGB (G)</label>
+
+      <p-inputMask name="corFonteG" mask="9?99"
+        [(ngModel)]="itemProduto.corFonteG"></p-inputMask>
+    </div>
+
+    <div class="ui-g-3 ui-fluid">
+      <label>Cor da Fonte RGB (B)</label>
+
+      <p-inputMask name="corFonteB" mask="9?99"
+        [(ngModel)]="itemProduto.corFonteB"></p-inputMask>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar" [disabled]="frmItemProduto.invalid"></button>
+    </div>
+  </form>
+</p-dialog>

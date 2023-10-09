@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+        <h2>Categorias</h2>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome" [(ngModel)]="filtro.nome">
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-11">
+
+      <p-table [value]="categorias" [responsive]="true"
+        [paginator]="true" [rows]="filtro.itensPorPagina"
+        [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)"
+        #tabela>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 15%;">Código</th>
+            <th>Nome</th>
+            <th>Categoria Pai</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-categoria>
+          <tr>
+            <td>{{ categoria.codigo }}</td>
+            <td>{{ categoria.nome }}</td>
+            <td>{{ categoria.categoriaPai !== null ? categoria.categoriaPai.codigo + ' - ' + categoria.categoriaPai.nome : '' }}</td>
+            <td class="col-acoes">
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Editar" tooltipPosition="top"
+                [routerLink]="['/categorias', categoria.id]"></a>
+
+              <button pButton icon="fa fa-trash"
+                pTooltip="Excluir" tooltipPosition="top"
+                (click)="confirmarExclusao(categoria)"></button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3">
+              Nenhuma categoria encontrada
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Nova Categoria" routerLink="/categorias/nova"></a>
+    </div>
+  </div>
+
+</div>
