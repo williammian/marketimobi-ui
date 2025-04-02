@@ -19,7 +19,6 @@ Este projeto é uma aplicação web desenvolvida em Angular para interagir com a
 ## Estrutura do Projeto
 
 - **src/**: Código-fonte principal da aplicação.
-- **e2e/**: Testes end-to-end.
 - **Dockerfile**: Script para criação da imagem Docker.
 - **docker-compose.yml**: Configuração para orquestração de contêineres.
 - **angular.json**: Configurações do Angular CLI.
