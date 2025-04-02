@@ -1,28 +1,63 @@
-# MarketimobiUi
+# Marketimobi UI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+Este projeto é uma aplicação web desenvolvida em Angular para interagir com a API REST [marketimobi-api](https://github.com/williammian/marketimobi-api), focada na geração de peças de marketing imobiliário.
 
-## Development server
+## Funcionalidades Principais
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- **Interface Responsiva**: Utilização do PrimeNG para componentes UI modernos e responsivos.
+- **Integração com API REST**: Consumo de endpoints da `marketimobi-api` para operações de criação e gerenciamento de peças de marketing.
+- **Dockerização**: Configuração para execução em contêineres Docker, facilitando a implantação.
 
-## Code scaffolding
+## Tecnologias Utilizadas
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+- **Angular**: Framework principal para desenvolvimento da aplicação.
+- **TypeScript**: Linguagem utilizada para desenvolvimento.
+- **HTML & CSS**: Estruturação e estilização das páginas.
+- **PrimeNG**: Biblioteca de componentes UI para Angular.
+- **Docker & Nginx**: Para conteinerização e servidor web.
 
-## Build
+## Estrutura do Projeto
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+- **src/**: Código-fonte principal da aplicação.
+- **e2e/**: Testes end-to-end.
+- **Dockerfile**: Script para criação da imagem Docker.
+- **docker-compose.yml**: Configuração para orquestração de contêineres.
+- **angular.json**: Configurações do Angular CLI.
+- **package.json**: Gerenciamento de dependências e scripts.
 
-## Running unit tests
+## Pré-requisitos
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Node.js**: Ambiente de execução necessário para o Angular.
+- **Angular CLI**: Ferramenta de linha de comando para Angular.
+- **Docker**: Para execução em contêineres (opcional).
 
-## Running end-to-end tests
+## Como Executar o Projeto
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+1. **Instalar Dependências**:
+   ```bash
+   npm install
+   ```
 
-## Further help
+2. **Executar o Servidor de Desenvolvimento**:
+   ```bash
+   ng serve
+   ```
+   Acesse `http://localhost:4200/` no navegador.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Docker
+
+1. **Construir a Imagem Docker**:
+   ```bash
+   docker build -t marketimobi-ui .
+   ```
+
+2. **Executar o Contêiner**:
+   ```bash
+   docker run -p 80:80 marketimobi-ui
+   ```
+   A aplicação estará disponível em `http://localhost/`.
+
+## Licença
+
+Este projeto está licenciado sob a licença MIT.
+
